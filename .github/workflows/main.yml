@@ -19,7 +19,13 @@ jobs:
         - StandaloneWindows64
         projectPath:
         - ./
+        unityVersion:
+        - 2021.3.4f1
     steps:
+      # Create Artifacs dir
+      - name: Create Artifacts dir 
+        run: |
+          mkdir -p artifacts
       # Checkout
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -29,8 +35,11 @@ jobs:
       # Cache
       - uses: actions/cache@v2
         with:
-          path: Library
-          key: Library
+          path: ${{ matrix.projectPath}]/Library
+          key: Library-${{ matrix.projectPath}]-${{ matrix.targetPlatform}}
+          restore-keys: |
+            Library-${{ matrix.projectPath }}-
+            Library-
 
       # Test
       - name: Run tests
